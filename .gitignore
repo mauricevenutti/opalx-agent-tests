@@ -1,0 +1,89 @@
+# ------------------------------
+# Basic project files to keep
+# ------------------------------
+!.gitignore          # keep this file itself
+!.gitattributes      # keep gitattributes if you have one
+
+# ------------------------------
+# Build artefacts (CMake, make, etc.)
+# ------------------------------
+# Build directories (customise if you use other names)
+build*/
+CMakeFiles/
+CMakeCache.txt
+CMakeCache.txt.user
+cmake_install.cmake
+Makefile
+install_manifest.txt
+
+# Object files, libraries, binaries
+*.o
+*.obj
+*.lo
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+
+# ------------------------------
+# Compiled object files, caches
+# ------------------------------
+# GCC/Clang
+*.gcno
+*.gcda
+*.gcov
+
+# ------------------------------
+# IDE / editor files
+# ------------------------------
+# VS Code
+.vscode/
+*.code-workspace
+
+# CLion / JetBrains
+.idea/
+*.iml
+
+# Visual Studio
+*.vcxproj*
+*.sln
+*.vcxproj.user
+
+# Qt Creator
+*.pro.user
+
+# ------------------------------
+# OS‑specific files
+# ------------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.AppleDouble
+.LSOverride
+
+# ------------------------------
+# Python / scripting helpers (if any)
+# ------------------------------
+__pycache__/
+*.py[cod]
+
+# ------------------------------
+# Miscellaneous
+# ------------------------------
+# Logs
+*.log
+
+# Temporary files
+*~
+*.tmp
+*.bak
+
+# ------------------------------
+# Keep source and data files you **do** want tracked
+# ------------------------------
+!.md
+!.json
