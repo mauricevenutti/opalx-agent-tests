@@ -15,14 +15,9 @@ behavior must be preserved.
 
 ## Constraints
 
-- Work only with the code in this directory and ../regression-tests-x, ../opalx-manual(already made available to you). No internet searches, no looking up existing issues or pull requests.
-- Never run `git pull`, `git fetch`, `git merge`, or `git rebase`, and never
-  pass `--unshallow` to any git command. This checkout is an intentionally
-  frozen, shallow snapshot; fetching from origin would pull in later commit
-  history that must stay out of this task. If `git push origin HEAD` is
-  rejected for any reason (e.g. non-fast-forward), do not try to reconcile
-  it yourself — stop and report the exact error instead.
-- For pushing you branch and pr creation, use a bash tool. You are allowed to do this. Do not look for a GitHub tool. 
+- Work only with the code in this directory and ../regression-tests-x, ../opalx-manual(already made available to you). No internet searches, no looking up existing issues.
+- Never run `git pull`, `git fetch`, `git merge`, or `git rebase`, and never pass `--unshallow` to any git command. 
+
 
 ## Deliverables
 
