@@ -21,7 +21,7 @@ yourself; the script below does all of it. Never run `git pull`, `git fetch`,
 - **PR body**: Markdown with these sections, filled in from your actual work:
   - `## Root cause`: 2–5 sentences, with affected locations as `file:line`
   - `## Change`: 2–5 sentences on what you changed, with locations
-  - `## Test`: the new regression test, and the result of running it
+  - `## Test`: the new unit test (file and test name), and the result of running it
     (pass/fail, with the relevant output)
   - `## Uncertainties`: side effects or open questions you could not rule out
   - a mention of `@mohsensadr`

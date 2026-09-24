@@ -54,9 +54,11 @@ At the end:
    line number) and explain why the bug occurs.
 2. Fix the bug with a minimal, targeted change. Do not modify code unrelated
    to the problem.
-4. Write a regression test that fails without your fix and passes with it
-   (you can find examples in ../regression-tests-x). Follow the conventions
-   of existing tests in the repository.
+4. Write a unit test in `unit_tests/` that fails without your fix and passes
+   with it. Follow the conventions of the existing tests there (GoogleTest,
+   registered with `add_opalx_test` in the directory's `CMakeLists.txt`).
+   Do not add tests to ../regression-tests-x: it is read-only, but you can
+   run its simulations to reproduce the bug or check your fix.
 5. Build the project and run the relevant tests. For build instructions, use the skill opalx-build-project. If building is not possible, state clearly what is missing instead of claiming a result. Then run the test.
 6. Run the skill `push-fix-to-github` (see Deliverables).
 
