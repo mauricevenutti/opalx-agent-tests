@@ -1,0 +1,12 @@
+{
+  "issue": 534,
+  "run": "pai-120b-1",
+  "branch": "534-fix-pai-120b-1",
+  "base_branch": "fix-534-sandbox",
+  "base_commit": "cdc687613067ec8145f828d0b2bea8209f7543fd",
+  "created": "2026-09-24T11:46:56Z",
+  "model": "paidynamics/pai-120b",
+  "started": "2026-09-24T11:46:56Z",
+  "duration_s": 427,
+  "exit_status": 0
+}

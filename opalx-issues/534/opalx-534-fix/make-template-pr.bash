@@ -11,7 +11,11 @@ set -euo pipefail
 #   unreachable im .git) -> Agent kann ueber git log/git log --all/
 #   FETCH_HEAD/reflog keine spaetere Historie sehen.
 
-TPL=~/mt/opalx-534-pr-template
+# Paths are relative to the issue folder (the parent of this script's
+# folder), whose name is the issue number, e.g. opalx-issues/534/.
+BASE="$(dirname "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)")"
+ISSUE="$(basename "$BASE")"
+TPL="$BASE/opalx-$ISSUE-pr-template"
 ORG=OPALX-project
 
 # GitHub verlangt fuer den Fetch eines "unadvertised" Commits den vollen
@@ -27,7 +31,7 @@ git -C "$BASE_DIR" init -q
 git -C "$BASE_DIR" remote add origin "https://github.com/$ORG/OPALX.git"
 git -C "$BASE_DIR" fetch -q origin "$FIX" --depth 2
 CUTOFF=$(git -C "$BASE_DIR" log -1 --format=%cI FETCH_HEAD)
-git -C "$BASE_DIR" checkout -q -b eval-534 FETCH_HEAD^
+git -C "$BASE_DIR" checkout -q -b eval-$ISSUE FETCH_HEAD^
 echo "Stichtag: $CUTOFF"
 echo "OPALX -> $(git -C "$BASE_DIR" log -1 --format='%h %cI %s')"
 
@@ -49,7 +53,7 @@ clone_snapshot() {   # $1 = Repo-Name, $2 = default branch
   git -C "$dir" init -q
   git -C "$dir" remote add origin "https://github.com/$ORG/$repo.git"
   git -C "$dir" fetch -q origin "$c" --depth 1
-  git -C "$dir" checkout -q FETCH_HEAD -b eval-534
+  git -C "$dir" checkout -q FETCH_HEAD -b eval-$ISSUE
   git -C "$dir" remote remove origin
   echo "$repo -> $(git -C "$dir" log -1 --format='%h %cI %s')"
 }

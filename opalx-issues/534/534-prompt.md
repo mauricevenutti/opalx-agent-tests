@@ -15,17 +15,38 @@ behavior must be preserved.
 
 ## Constraints
 
+- Only use paths relative to your working directory. 
+- There is no user, so never ask for permission, and if a tool call is rejected, check the path and try again
 - Work only with the code in this directory and ../regression-tests-x, ../opalx-manual(already made available to you). No internet searches, no looking up existing issues.
 - Never run `git pull`, `git fetch`, `git merge`, or `git rebase`, and never pass `--unshallow` to any git command. 
+- Do not run `gh` or `git push` yourself; the skill `push-fix-to-github` does all communication with GitHub.
 
 
 ## Deliverables
 
-At the end, report :
-- Root cause (2–5 sentences) with the affected locations (file:line)
-- The change you made in 2-5 sentences and the locations
-- The new test and the result of the test run (pass/fail, with output)
-- Any uncertainties or side effects you could not rule out
+At the end: 
+1. After running the tests, use the skill `push-fix-to-github` to commit,
+   push, and open the PR. Pass it these parameters:
+   - issue number: 534
+   - a PR title
+   - the PR body, which must contain:
+     - Root cause (2–5 sentences) with the affected locations (file:line)
+     - The change you made in 2-5 sentences and the locations
+     - The new test and the result of the test run (pass/fail, with output)
+     - Any uncertainties or side effects you could not rule out
+     - a mention of @mohsensadr
+   Do not create, rename, or switch branches. The current branch is already
+   linked to issue #534.
+   The PR is not optional and is the deliverable of this task: do not stop,
+   and do not report completion, until the skill's script has printed the
+   PR URL. 
+2. Before running the skill, check that your PR body really contains the root
+   cause, the changes, the new test with its results, the uncertainties, and
+   the @mohsensadr mention. If you notice afterwards that something is
+   missing, write the corrected body and run the skill again: it updates the
+   existing PR instead of opening a new one. 
+
+
 
 ## Task
 
@@ -37,21 +58,8 @@ At the end, report :
    (you can find examples in ../regression-tests-x). Follow the conventions
    of existing tests in the repository.
 5. Build the project and run the relevant tests. For build instructions, use the skill opalx-build-project. If building is not possible, state clearly what is missing instead of claiming a result. Then run the test.
-6. Commit your changes, push the current branch to origin, and open a PR
-   against the sandbox base branch:
-   `git push origin HEAD`
-   `gh pr create -R OPALX-project/OPALX --base fix-534-sandbox --head <your current branch name>`
-   Mention @mohsensadr in the PR description. Write the deliverables into the pr.
-   The PR is not optional and is the deliverable of this task: do not stop,
-   and do not report completion, until `gh pr create` has succeeded and you
-   have the PR URL. 
-7. Verify the PR, don't just assume it: run
-   `gh pr view -R OPALX-project/OPALX <branch> --json body,title -q .body`
-   and confirm the returned body actually contains the root cause, the cahges and  the new
-   test description including the test results as well as the uncertainties section, and an
-   @mohsensadr mention. If any are missing, fix it with
-   `gh pr edit -R OPALX-project/OPALX <branch> --body-file <file>` — do not
-   report the task complete until this check passes. 
+6. Run the skill `push-fix-to-github` (see Deliverables).
+
 
 
 
