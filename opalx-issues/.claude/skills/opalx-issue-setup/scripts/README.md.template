@@ -1,0 +1,111 @@
+# OPALX issue #{{ISSUE}}: agent study workflow
+
+Goal: give a coding agent a real OPALX bug, frozen at the commit right
+before the real fix, and see whether it can find and fix it. Each run ends
+in a real PR against `OPALX-project/OPALX`, and the agent never sees the
+actual fix or any later commit history. The same issue is run many times,
+possibly in parallel, by one or several models.
+
+## Layout
+
+```
+opalx-issues/
+  .physicscode/skills/          physicscode skills shared by all agent runs
+                                (opalx-build-project, opalx-run-simulation,
+                                push-fix-to-github)
+  {{ISSUE}}/
+    {{ISSUE}}-prompt.md         task prompt for the agent (hand-written, step 2)
+    opalx-{{ISSUE}}-fix/        the workflow scripts (this folder)
+    opalx-{{ISSUE}}-pr-template/  frozen snapshot + prebuilt builds (step 3)
+    opalx-{{ISSUE}}-run-<run>/  transient working copy of one run (steps 4-6)
+    results/
+      original/                 ground truth from step 1, never shown to agents
+      <run>/                    collected results of one run (step 6)
+```
+
+All scripts read the issue number from the folder name, so they take no
+issue argument.
+
+## Steps
+
+1. **`bash fetch-issue.bash [pr-number]`** (already run). Writes to
+   `results/original/`: the issue text with comments (`issue-{{ISSUE}}.md`),
+   the diff of the PR that resolved it (`fix-{{ISSUE}}.diff`), and the fix
+   commit and the base-branch commit right before it (`fix-{{ISSUE}}.commit`,
+   `fix-{{ISSUE}}.base`). If it picked the wrong PR, re-run it with the PR
+   number.
+2. **Write `../{{ISSUE}}-prompt.md` by hand.** Use `opalx-issues/534/534-prompt.md`
+   as the structural model: bug report, constraints, deliverables, task steps.
+   - Describe observed vs. expected behavior as a user hitting the bug
+     would. Never quote or summarize the diff. OPALX issues often already
+     name the root cause and fix, so don't paste `issue-{{ISSUE}}.md` in
+     verbatim.
+   - Forbid `git pull`/`fetch`/`merge`/`rebase` and `--unshallow`: an
+     unscoped pull unshallows origin and breaks the snapshot isolation.
+     The permissions from step 4 enforce this too.
+   - Delivery goes through the physicscode skill `push-fix-to-github`.
+     The agent passes the issue number, a PR title and the PR body. The
+     skill's script commits, pushes, opens the PR against
+     `fix-{{ISSUE}}-sandbox`, and reads it back. Agents have no `gh`
+     themselves, so don't ask them to verify with `gh pr view`. Instead,
+     list the required body sections and tell them to check the body
+     before calling the skill; re-running the skill updates the PR.
+   - Make the skill call a mandatory final task step: "do not report
+     completion until the script printed the PR URL". Pilot runs showed
+     that agents otherwise stop before the PR.
+   - Tell the agent its branch is already linked to the issue and that it
+     must not create, rename or switch branches.
+3. **`bash make-template.bash [fix-commit-sha]`**: builds
+   `../opalx-{{ISSUE}}-pr-template/`, a frozen snapshot of `OPALX` +
+   `opalx-manual` + `regression-tests-x` at the commit right before the
+   fix.
+   - Every fetch is a shallow fetch of one exact commit SHA, so no later
+     commits land locally.
+   - `OPALX` keeps its `origin`. The other two repos have none.
+   - Pushes `fix-{{ISSUE}}-sandbox`, the shared PR base for all runs.
+   - Builds OPALX twice (`build_serial`, `build_debug`), so runs start
+     warm. A failed build only prints a warning.
+4. **`bash new-agent-run.bash <run>`**: copies the template to
+   `../opalx-{{ISSUE}}-run-<run>/` and rewrites the absolute paths in
+   `build_*`. It creates the linked branch `{{ISSUE}}-fix-<run>` with
+   `gh issue develop`, and checks that the sandbox is still at the template
+   commit. It also writes:
+   - `run-info.json`: base commit, branch.
+   - `OPALX/physicscode.json`:
+     - read-only access to the sibling repos and to
+       `opalx-issues/.physicscode/skills` (wired in via `skills.paths`);
+     - no web tools;
+     - bash denies `gh`, `git push/fetch/pull/merge/rebase/remote/
+       ls-remote/clone`, `--unshallow` and `curl`/`wget`. Only
+       `push-fix.bash` reaches GitHub.
+5. **`bash run-agent.bash <run> [model]`**: runs `physicscode` headless
+   in the run's `OPALX/` with `{{ISSUE}}-prompt.md`. Claude Code skills are
+   hidden via `PHYSICSCODE_DISABLE_CLAUDE_CODE_SKILLS=1`. It then:
+   - adds model, start time, duration and exit status to `run-info.json`;
+   - exports the session to `sessions/` (JSON + Markdown);
+   - posts it as a gist and comments the link on the agent's PR.
+6. **`bash collect-run.bash <run>`**: copies the session files into
+   `results/<run>/`, together with `<run>.diff` (all changes vs. the base
+   commit, committed or not) and `meta.json` (run info, head commit,
+   commits, pushed commit, uncommitted files, diffstat, PR). Then it
+   deletes the run's working copy.
+
+## Multiple runs
+
+All runs of this issue share `fix-{{ISSUE}}-sandbox`. Each run needs a
+unique name. It gets its own working copy, its own branch
+`{{ISSUE}}-fix-<run>` and its own open PR into the sandbox. Never merge
+these PRs: the sandbox has to stay at the template commit, and
+`new-agent-run.bash` refuses to continue otherwise. A run name can't be
+reused while its remote branch exists. Runs can go in parallel, but run
+them one after another if you measure latency.
+
+```
+bash new-agent-run.bash sonnet5-01
+bash run-agent.bash     sonnet5-01 anthropic/claude-sonnet-5
+bash collect-run.bash   sonnet5-01
+
+bash new-agent-run.bash pai-120b-01
+bash run-agent.bash     pai-120b-01 paidynamics/pai-120b
+bash collect-run.bash   pai-120b-01
+```

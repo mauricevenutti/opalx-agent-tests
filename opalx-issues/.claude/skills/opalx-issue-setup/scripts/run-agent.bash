@@ -1,25 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
-#automated version
 
-# Runs physicscode non-interactively against one agent run's OPALX
-# checkout (created earlier by new-agent-run.bash), using
-# <issue>-prompt.md (in the issue folder) as the task. The prompt itself instructs the agent to
-# commit, push its branch, and open the PR. Once physicscode exits, this
-# script finds the session it just ran, exports the full transcript to
+# Runs physicscode non-interactively for one agent run, feeding it
+# <issue>-prompt.md (in the issue folder) as the task message directly in
+# the run's OPALX checkout. The prompt must tell the agent to deliver via
+# the push-fix-to-github skill (commit, push, PR against
+# fix-<issue>-sandbox); the agent itself has no gh access. Records model
+# and wall-clock time in run-info.json. Once physicscode exits, this script
+# finds the session it just ran, exports the full transcript to
 # <run-dir>/sessions/ (a sibling of OPALX/, not inside the git repo) as
 # JSON, renders it to Markdown, publishes that Markdown as a gist, and --
 # if the agent's PR exists -- comments the gist link onto it.
 #
+# Paths are relative to the issue folder (opalx-issues/<N>/, the parent of
+# this script's folder, named after the issue number).
+#
 # Usage: bash run-agent.bash <run-name> [model]
-#   e.g. bash run-agent.bash pai-120b paidynamics/pai-120b
-#        bash run-agent.bash sonnet5
+#   e.g. bash run-agent.bash pai-120b-01 paidynamics/pai-120b
+#        bash run-agent.bash sonnet5-01
 
 RUN="${1:?Usage: run-agent.bash <run-name> [model]}"
 MODEL="${2:-}"
 SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
-# Paths are relative to the issue folder (the parent of this script's
-# folder), whose name is the issue number, e.g. opalx-issues/534/.
 BASE="$(dirname "$SETUP_DIR")"
 ISSUE="$(basename "$BASE")"
 DEST="$BASE/opalx-$ISSUE-run-$RUN"
@@ -29,11 +31,11 @@ PROMPT_FILE="$BASE/$ISSUE-prompt.md"
 TITLE="$ISSUE-fix-$RUN"
 
 if [ ! -d "$OPALX_DIR" ]; then
-  echo "ERROR: $OPALX_DIR does not exist, run new-agent-run.bash $RUN first." >&2
+  echo "ERROR: $OPALX_DIR missing, run new-agent-run.bash $RUN first." >&2
   exit 1
 fi
 if [ ! -f "$PROMPT_FILE" ]; then
-  echo "ERROR: prompt missing at $PROMPT_FILE." >&2
+  echo "ERROR: $PROMPT_FILE missing -- write the agent's task prompt first." >&2
   exit 1
 fi
 
@@ -43,6 +45,9 @@ if [ -n "$MODEL" ]; then
 fi
 
 echo "Starting physicscode in $OPALX_DIR (title: $TITLE) ..."
+# ${arr[@]+...}: an empty array under `set -u` is an "unbound variable"
+# error in macOS's bash 3.2. A non-zero exit (crash, timeout, Ctrl-C) must
+# not skip the transcript export below.
 # Hide Claude Code skills (~/.claude/skills, e.g. opalx-issue-setup, which
 # fetches the original issue and fix); the agent only gets the skills wired
 # in via physicscode.json.
@@ -69,9 +74,9 @@ PY
 
 # Find the session that just ran in this directory (there should be
 # exactly one per run folder; pick the most recently updated in case of
-# reruns). `session list` scopes results to the current working directory's
-# project, so it must be run from inside OPALX_DIR, not from wherever this
-# script was launched.
+# reruns). `session list` scopes results to the current working
+# directory's project, so it must be run from inside OPALX_DIR, not from
+# wherever this script was launched.
 SESSION_LIST=$(cd "$OPALX_DIR" && physicscode session list --format json || true)
 
 if [ -z "$SESSION_LIST" ]; then
@@ -86,8 +91,8 @@ try:
 except json.JSONDecodeError as e:
     print(f'WARNING: could not parse session list as JSON: {e}', file=sys.stderr)
     sys.exit(0)
-matches = [s for s in sessions if s['directory'] == '$OPALX_DIR']
-matches.sort(key=lambda s: s['updated'], reverse=True)
+matches = [s for s in sessions if s.get('directory') == '$OPALX_DIR']
+matches.sort(key=lambda s: s.get('updated', 0), reverse=True)
 print(matches[0]['id'] if matches else '')
 " "$SESSION_LIST")
 
@@ -96,6 +101,12 @@ if [ -z "$SESSION_ID" ]; then
   exit 0
 fi
 
+# Note: deliberately not using `physicscode export --sanitize` -- it
+# redacts every text, reasoning, and diff part wholesale (replacing them
+# with placeholders like "[redacted:text:...]"), which makes the export
+# useless for actually reviewing what the agent did. Since the transcript
+# stays local under sessions/ and is never pushed, there's no need for
+# sanitization.
 SESSIONS_DIR="$DEST/sessions"
 mkdir -p "$SESSIONS_DIR"
 
@@ -118,7 +129,7 @@ PR_URL=$(gh pr view -R OPALX-project/OPALX "$BRANCH" --json url --jq .url 2>/dev
 if [ -n "$PR_URL" ]; then
   echo "PR found: $PR_URL"
   if [ -n "$GIST_URL" ]; then
-    gh pr comment "$PR_URL" -R OPALX-project/OPALX --body "Session: $GIST_URL"
+    gh pr comment "$PR_URL" -R OPALX-project/OPALX --body "Detailed Session: $GIST_URL"
     echo "Commented gist link on PR"
   fi
 else

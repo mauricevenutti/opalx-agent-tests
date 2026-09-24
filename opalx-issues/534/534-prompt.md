@@ -17,6 +17,7 @@ behavior must be preserved.
 
 - Work only with the code in this directory and ../regression-tests-x, ../opalx-manual(already made available to you). No internet searches, no looking up existing issues.
 - Never run `git pull`, `git fetch`, `git merge`, or `git rebase`, and never pass `--unshallow` to any git command. 
+- Do not run `gh` or `git push` yourself; the skill `push-fix-to-github` does all communication with GitHub.
 
 
 ## Deliverables
@@ -37,13 +38,11 @@ At the end:
    The PR is not optional and is the deliverable of this task: do not stop,
    and do not report completion, until the skill's script has printed the
    PR URL. 
-2. Verify the PR, don't just assume it: run
-   `gh pr view -R OPALX-project/OPALX <branch> --json body,title -q .body`
-   and confirm the returned body actually contains the root cause, the changes and  the new
-   test description including the test results as well as the uncertainties section, and an
-   @mohsensadr mention. If any are missing, fix it with
-   `gh pr edit -R OPALX-project/OPALX <branch> --body-file <file>` — do not
-   report the task complete until this check passes. 
+2. Before running the skill, check that your PR body really contains the root
+   cause, the changes, the new test with its results, the uncertainties, and
+   the @mohsensadr mention. If you notice afterwards that something is
+   missing, write the corrected body and run the skill again: it updates the
+   existing PR instead of opening a new one. 
 
 
 
