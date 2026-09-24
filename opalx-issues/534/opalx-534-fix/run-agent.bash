@@ -4,7 +4,7 @@ set -euo pipefail
 
 # Runs physicscode non-interactively against one agent run's OPALX
 # checkout (created earlier by new-agent-run.bash), using
-# fix-534-prompt.md as the task. The prompt itself instructs the agent to
+# <issue>-prompt.md (in the issue folder) as the task. The prompt itself instructs the agent to
 # commit, push its branch, and open the PR. Once physicscode exits, this
 # script finds the session it just ran, exports the full transcript to
 # <run-dir>/sessions/ (a sibling of OPALX/, not inside the git repo) as
@@ -17,15 +17,23 @@ set -euo pipefail
 
 RUN="${1:?Usage: run-agent.bash <run-name> [model]}"
 MODEL="${2:-}"
-SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-DEST=~/mt/opalx-534-run-"$RUN"
+SETUP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+# Paths are relative to the issue folder (the parent of this script's
+# folder), whose name is the issue number, e.g. opalx-issues/534/.
+BASE="$(dirname "$SETUP_DIR")"
+ISSUE="$(basename "$BASE")"
+DEST="$BASE/opalx-$ISSUE-run-$RUN"
 OPALX_DIR="$DEST/OPALX"
-BRANCH="534-fix-$RUN"
-PROMPT_FILE=~/mt/fix-534-results/fix-534-prompt.md
-TITLE="534-fix-$RUN"
+BRANCH="$ISSUE-fix-$RUN"
+PROMPT_FILE="$BASE/$ISSUE-prompt.md"
+TITLE="$ISSUE-fix-$RUN"
 
 if [ ! -d "$OPALX_DIR" ]; then
   echo "ERROR: $OPALX_DIR does not exist, run new-agent-run.bash $RUN first." >&2
+  exit 1
+fi
+if [ ! -f "$PROMPT_FILE" ]; then
+  echo "ERROR: prompt missing at $PROMPT_FILE." >&2
   exit 1
 fi
 
@@ -35,7 +43,10 @@ if [ -n "$MODEL" ]; then
 fi
 
 echo "Starting physicscode in $OPALX_DIR (title: $TITLE) ..."
-physicscode run \
+# Hide Claude Code skills (~/.claude/skills, e.g. opalx-issue-setup, which
+# fetches the original issue and fix); the agent only gets the skills wired
+# in via physicscode.json.
+PHYSICSCODE_DISABLE_CLAUDE_CODE_SKILLS=1 physicscode run \
   --dir "$OPALX_DIR" \
   --title "$TITLE" \
   "${MODEL_ARGS[@]}" \
