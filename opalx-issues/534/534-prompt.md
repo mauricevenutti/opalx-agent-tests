@@ -15,6 +15,8 @@ behavior must be preserved.
 
 ## Constraints
 
+- Only use paths relative to your working directory. 
+- There is no user, so never ask for permission, and if a tool call is rejected, check the path and try again
 - Work only with the code in this directory and ../regression-tests-x, ../opalx-manual(already made available to you). No internet searches, no looking up existing issues.
 - Never run `git pull`, `git fetch`, `git merge`, or `git rebase`, and never pass `--unshallow` to any git command. 
 - Do not run `gh` or `git push` yourself; the skill `push-fix-to-github` does all communication with GitHub.

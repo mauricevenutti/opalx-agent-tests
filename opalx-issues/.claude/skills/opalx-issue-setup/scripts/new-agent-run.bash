@@ -76,7 +76,16 @@ fi
 
 # Never let the agent commit the local config, the PR body scratch file or
 # build trees, regardless of what .gitignore looked like at the cutoff.
-printf '%s\n' physicscode.json pr-body.md 'build_*/' >> "$DEST/OPALX/.git/info/exclude"
+printf '%s\n' physicscode.json .physicscode/ pr-body.md 'build_*/' >> "$DEST/OPALX/.git/info/exclude"
+
+# Copy the shared skills into the checkout's own .physicscode/skills, where
+# physicscode finds them without extra config, and the agent can call the
+# push script by the short relative path .physicscode/skills/
+# push-fix-to-github/push-fix.bash. (With an absolute path outside the
+# project, pai-120b failed to run it.) Excluded from commits above, not
+# editable below.
+mkdir -p "$DEST/OPALX/.physicscode"
+cp -R "$SKILLS_DIR" "$DEST/OPALX/.physicscode/skills"
 
 # Run metadata; run-agent.bash adds model/timing, collect-run.bash reads the
 # base commit from here to produce the run's diff.
@@ -94,9 +103,6 @@ EOF
 # physicscode project config: scope the agent to this run only.
 # - project root is $DEST/OPALX (its own .git, correct branch detection)
 # - read-only access to the two sibling repos needed for build/tests
-# - skills: physicscode only walks up to the git root ($DEST/OPALX) looking
-#   for .physicscode/, so the shared skills are wired in via skills.paths,
-#   readable (the agent runs push-fix.bash from there) but not editable
 # - everything else outside the project is denied by default
 # - websearch/webfetch denied outright: closed-book test against a frozen
 #   snapshot
@@ -105,27 +111,26 @@ EOF
 #   or the original issue/fix nor move fix-<issue>-sandbox. The only way to
 #   GitHub is push-fix.bash (the push-fix-to-github skill), whose own
 #   gh/git calls are not subject to these rules.
+# - experimental.continue_loop_on_deny: a denied or auto-rejected tool call
+#   (e.g. a write to a mistyped path outside the project) is returned to
+#   the agent as an error instead of ending the whole run.
 cat > "$DEST/OPALX/physicscode.json" <<EOF
 {
   "\$schema": "https://physicscode.ai/config.json",
-  "skills": {
-    "paths": ["$SKILLS_DIR"]
-  },
   "permission": {
     "external_directory": {
       "$DEST/opalx-manual/**": "allow",
-      "$DEST/regression-tests-x/**": "allow",
-      "$SKILLS_DIR/**": "allow"
+      "$DEST/regression-tests-x/**": "allow"
     },
     "read": {
       "$DEST/opalx-manual/**": "allow",
-      "$DEST/regression-tests-x/**": "allow",
-      "$SKILLS_DIR/**": "allow"
+      "$DEST/regression-tests-x/**": "allow"
     },
     "edit": {
       "$DEST/opalx-manual/**": "deny",
       "$DEST/regression-tests-x/**": "deny",
-      "$SKILLS_DIR/**": "deny"
+      "$DEST/OPALX/.physicscode/**": "deny",
+      ".physicscode/**": "deny"
     },
     "bash": {
       "*": "allow",
@@ -141,7 +146,7 @@ cat > "$DEST/OPALX/physicscode.json" <<EOF
       "* --unshallow*": "deny",
       "curl *": "deny",
       "wget *": "deny",
-      "bash $SKILLS_DIR/push-fix-to-github/push-fix.bash *": "allow"
+      "*push-fix-to-github/push-fix.bash *": "allow"
     },
     "webfetch": "deny",
     "websearch": "deny"

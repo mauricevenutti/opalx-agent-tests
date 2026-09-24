@@ -63,9 +63,9 @@ if [ "$(git -C "$DEST/OPALX" rev-parse HEAD)" != "$TPL_HEAD" ]; then
   exit 1
 fi
 
-# Never let the agent commit the local config or the PR body scratch file,
-# regardless of .gitignore.
-printf '%s\n' physicscode.json pr-body.md >> "$DEST/OPALX/.git/info/exclude"
+# Never let the agent commit the local config, the copied skills or the PR
+# body scratch file, regardless of .gitignore.
+printf '%s\n' physicscode.json .physicscode/ pr-body.md >> "$DEST/OPALX/.git/info/exclude"
 
 # Run metadata; run-agent.bash adds model/timing, collect-run.bash reads the
 # base commit from here to produce the run's diff.
@@ -80,12 +80,20 @@ cat > "$DEST/run-info.json" <<EOF
 }
 EOF
 
-# Shared physicscode skills (opalx-build-project, push-fix-to-github) live in
-# opalx-issues/.physicscode/skills. physicscode only walks up to the git root
-# ($DEST/OPALX) looking for .physicscode/, so they are wired in explicitly
-# via skills.paths, readable (the agent runs push-fix.bash from there) but
-# not editable.
-SKILLS_DIR="$(dirname "$BASE")/.physicscode/skills"
+# Shared physicscode skills (opalx-build-project, opalx-run-simulation,
+# push-fix-to-github) live in opalx-issues/.physicscode/skills. They are
+# copied into the checkout's own .physicscode/skills, where physicscode
+# finds them without extra config, and the agent can call the push script
+# by the short relative path .physicscode/skills/push-fix-to-github/
+# push-fix.bash. (With an absolute path outside the project, pai-120b
+# failed to run it.) Excluded from commits above, not editable below.
+SKILLS_SRC="$(dirname "$BASE")/.physicscode/skills"
+if [ ! -f "$SKILLS_SRC/push-fix-to-github/push-fix.bash" ]; then
+  echo "ERROR: physicscode skills missing at $SKILLS_SRC (push-fix-to-github is required)." >&2
+  exit 1
+fi
+mkdir -p "$DEST/OPALX/.physicscode"
+cp -R "$SKILLS_SRC" "$DEST/OPALX/.physicscode/skills"
 
 # physicscode project config: scope the agent to this run only.
 # - project root is $DEST/OPALX (its own .git, correct branch detection)
@@ -99,27 +107,26 @@ SKILLS_DIR="$(dirname "$BASE")/.physicscode/skills"
 #   original issue/fix nor move fix-<issue>-sandbox. The only way to GitHub
 #   is push-fix.bash (the push-fix-to-github skill), whose own gh/git calls
 #   are not subject to these rules.
+# - experimental.continue_loop_on_deny: a denied or auto-rejected tool call
+#   (e.g. a write to a mistyped path outside the project) is returned to
+#   the agent as an error instead of ending the whole run.
 cat > "$DEST/OPALX/physicscode.json" <<EOF
 {
   "\$schema": "https://physicscode.ai/config.json",
-  "skills": {
-    "paths": ["$SKILLS_DIR"]
-  },
   "permission": {
     "external_directory": {
       "$DEST/opalx-manual/**": "allow",
-      "$DEST/regression-tests-x/**": "allow",
-      "$SKILLS_DIR/**": "allow"
+      "$DEST/regression-tests-x/**": "allow"
     },
     "read": {
       "$DEST/opalx-manual/**": "allow",
-      "$DEST/regression-tests-x/**": "allow",
-      "$SKILLS_DIR/**": "allow"
+      "$DEST/regression-tests-x/**": "allow"
     },
     "edit": {
       "$DEST/opalx-manual/**": "deny",
       "$DEST/regression-tests-x/**": "deny",
-      "$SKILLS_DIR/**": "deny"
+      "$DEST/OPALX/.physicscode/**": "deny",
+      ".physicscode/**": "deny"
     },
     "bash": {
       "*": "allow",
@@ -135,7 +142,7 @@ cat > "$DEST/OPALX/physicscode.json" <<EOF
       "* --unshallow*": "deny",
       "curl *": "deny",
       "wget *": "deny",
-      "bash $SKILLS_DIR/push-fix-to-github/push-fix.bash *": "allow"
+      "*push-fix-to-github/push-fix.bash *": "allow"
     },
     "webfetch": "deny",
     "websearch": "deny"

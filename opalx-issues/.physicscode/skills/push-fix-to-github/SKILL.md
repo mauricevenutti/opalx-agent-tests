@@ -33,10 +33,17 @@ of the commit and deletes it once the PR is created.
 
 ## 3. Run the script
 
-From the root of the OPALX checkout:
+From the root of the OPALX checkout (your working directory), run exactly this
+command with your values filled in. The path is relative and correct as written:
 
 ```bash
-bash <this skill's directory>/push-fix.bash <issue> "<title>" pr-body.md
+bash .physicscode/skills/push-fix-to-github/push-fix.bash <issue> "<title>" pr-body.md
+```
+
+For example:
+
+```bash
+bash .physicscode/skills/push-fix-to-github/push-fix.bash 534 "Fix particle BC for open field BCs" pr-body.md
 ```
 
 The script stages all changes (except `physicscode.json` and the body file), commits, runs
