@@ -6038,6 +6038,500 @@
       ],
       "teacher": "claude-opus-5-5",
       "grounding_check": "pass"
+    },
+    {
+      "instruction": "What is the default value of MINSTEPFORREBIN in OPALX?",
+      "input": "",
+      "output": "DEFER: version-specific. Default values of OPTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"MINSTEPFORREBIN default value minStepForRebin Options\"\nStable part: MINSTEPFORREBIN is an attribute of the OPTION command. It sets how many tracking steps run before the energy bins are merged into a single bin. Like the other options, its default is a global in the Options namespace, and the OPTION command overwrites it when the attribute is set in the input file.",
+      "mcp_science_output": "DEFER: version-specific. Default values of OPTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"MINSTEPFORREBIN default value minStepForRebin Options\"\nStable part: MINSTEPFORREBIN is an attribute of the OPTION command. It sets how many tracking steps run before the energy bins are merged into a single bin. Like the other options, its default is a global in the Options namespace, and the OPTION command overwrites it when the attribute is set in the input file.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Utilities/Options.cpp",
+        "lines": "59",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [
+        {
+          "repo": "OPALX",
+          "file": "src/BasicActions/Option.cpp",
+          "lines": "220-225",
+          "commit": "45e126f3a"
+        },
+        {
+          "repo": "OPALX",
+          "file": "src/BasicActions/Option.cpp",
+          "lines": "562-564",
+          "commit": "45e126f3a"
+        }
+      ],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "How often does OPALX write phase space data if I don't set PSDUMPFREQ?",
+      "input": "",
+      "output": "DEFER: version-specific. Default values of OPTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"PSDUMPFREQ default value psDumpFreq Options\"\nStable part: PSDUMPFREQ is an OPTION attribute. Phase space is written on steps where the step number modulo PSDUMPFREQ is zero, and a value of 0 switches phase space dumps off.",
+      "mcp_science_output": "DEFER: version-specific. Default values of OPTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"PSDUMPFREQ default value psDumpFreq Options\"\nStable part: PSDUMPFREQ is an OPTION attribute. Phase space is written on steps where the step number modulo PSDUMPFREQ is zero, and a value of 0 switches phase space dumps off.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Utilities/Options.cpp",
+        "lines": "39",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [
+        {
+          "repo": "OPALX",
+          "file": "src/BasicActions/Option.cpp",
+          "lines": "131-136",
+          "commit": "45e126f3a"
+        }
+      ],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "I left STATDUMPFREQ out of my OPTION statement. How often will the statistics file be written?",
+      "input": "OPTION, PSDUMPFREQ = 100, VERSION = 10900;",
+      "output": "DEFER: version-specific. Default values of OPTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"STATDUMPFREQ default value statDumpFreq Options\"\nStable part: STATDUMPFREQ controls how often the statistical beam quantities (RMS sizes, emittances, ...) are written: on steps where the step number modulo STATDUMPFREQ is zero. A value of 0 switches statistics output off.",
+      "mcp_science_output": "DEFER: version-specific. Default values of OPTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"STATDUMPFREQ default value statDumpFreq Options\"\nStable part: STATDUMPFREQ controls how often the statistical beam quantities (RMS sizes, emittances, ...) are written: on steps where the step number modulo STATDUMPFREQ is zero. A value of 0 switches statistics output off.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Utilities/Options.cpp",
+        "lines": "41",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [
+        {
+          "repo": "OPALX",
+          "file": "src/BasicActions/Option.cpp",
+          "lines": "138-143",
+          "commit": "45e126f3a"
+        }
+      ],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "How many refinements does the autophase scan do by default?",
+      "input": "",
+      "output": "DEFER: version-specific. Default values of OPTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"AUTOPHASE default value autoPhase Options\"\nStable part: AUTOPHASE is an OPTION attribute. If it is greater than zero, OPALX scans the phase of each RF structure for maximum acceleration, and the value is the number of refinements of the search range.",
+      "mcp_science_output": "DEFER: version-specific. Default values of OPTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"AUTOPHASE default value autoPhase Options\"\nStable part: AUTOPHASE is an OPTION attribute. If it is greater than zero, OPALX scans the phase of each RF structure for maximum acceleration, and the value is the number of refinements of the search range.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Utilities/Options.cpp",
+        "lines": "77",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [
+        {
+          "repo": "OPALX",
+          "file": "src/BasicActions/Option.cpp",
+          "lines": "258-264",
+          "commit": "45e126f3a"
+        }
+      ],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "What is the default LOADBALANCINGTHRESHOLD in OPALX?",
+      "input": "",
+      "output": "DEFER: version-specific. Default values of OPTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"LOADBALANCINGTHRESHOLD default value loadBalancingThreshold\"\nStable part: LOADBALANCINGTHRESHOLD is an OPTION attribute. Particles are repartitioned across ranks when the imbalance in particle counts between ranks exceeds this fraction. The check only runs every REPARTFREQ steps.",
+      "mcp_science_output": "DEFER: version-specific. Default values of OPTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"LOADBALANCINGTHRESHOLD default value loadBalancingThreshold\"\nStable part: LOADBALANCINGTHRESHOLD is an OPTION attribute. Particles are repartitioned across ranks when the imbalance in particle counts between ranks exceeds this fraction. The check only runs every REPARTFREQ steps.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Utilities/Options.cpp",
+        "lines": "119",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [
+        {
+          "repo": "OPALX",
+          "file": "src/BasicActions/Option.cpp",
+          "lines": "373-378",
+          "commit": "45e126f3a"
+        }
+      ],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "Does OPALX support checkpoint/restart, and what is the default CHECKPOINTFREQ?",
+      "input": "",
+      "output": "DEFER: version-specific. This behaviour changed between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"CHECKPOINTFREQ default value checkpoint restart option\"\nStable part: CHECKPOINTFREQ is an OPTION attribute. When set, a restart checkpoint is written on steps where the global track step modulo CHECKPOINTFREQ is zero, and a value of 0 disables checkpointing. Whether a given OPALX version has it at all, and how a restart is started, depends on the version.",
+      "mcp_science_output": "DEFER: version-specific. This behaviour changed between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"CHECKPOINTFREQ default value checkpoint restart option\"\nStable part: CHECKPOINTFREQ is an OPTION attribute. When set, a restart checkpoint is written on steps where the global track step modulo CHECKPOINTFREQ is zero, and a value of 0 disables checkpointing. Whether a given OPALX version has it at all, and how a restart is started, depends on the version.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/BasicActions/Option.cpp",
+        "lines": "145-150",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [
+        {
+          "repo": "OPALX",
+          "file": "src/Utilities/Options.cpp",
+          "lines": "43",
+          "commit": "45e126f3a"
+        }
+      ],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "What is the default QM_MODE, and which values does it accept?",
+      "input": "",
+      "output": "DEFER: version-specific. The accepted values of QM_MODE change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"QM_MODE default SINGLE ATTRIBUTES useQMAttributes\"\nStable part: QM_MODE is an OPTION attribute that chooses how particle charge and mass are stored: either one shared value per particle container, or per-particle Q/M attributes. Per-particle storage costs memory but is needed when charge or mass differs between particles.",
+      "mcp_science_output": "DEFER: version-specific. The accepted values of QM_MODE change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"QM_MODE default SINGLE ATTRIBUTES useQMAttributes\"\nStable part: QM_MODE is an OPTION attribute that chooses how particle charge and mass are stored: either one shared value per particle container, or per-particle Q/M attributes. Per-particle storage costs memory but is needed when charge or mass differs between particles.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/BasicActions/Option.cpp",
+        "lines": "356-361",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [
+        {
+          "repo": "OPALX",
+          "file": "src/Utilities/Options.cpp",
+          "lines": "115",
+          "commit": "45e126f3a"
+        }
+      ],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "Which time integrators can I choose in the TRACK command, and which one is the default?",
+      "input": "",
+      "output": "DEFER: version-specific. The accepted values of TRACK attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"TRACK TIMEINTEGRATOR predefined values default\"\nStable part: The time integrator is chosen with the TIMEINTEGRATOR attribute of TRACK. It is a predefined string, so a misspelled name is rejected by the parser instead of being silently ignored.",
+      "mcp_science_output": "DEFER: version-specific. The accepted values of TRACK attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"TRACK TIMEINTEGRATOR predefined values default\"\nStable part: The time integrator is chosen with the TIMEINTEGRATOR attribute of TRACK. It is a predefined string, so a misspelled name is rejected by the parser instead of being silently ignored.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Track/TrackCmd.cpp",
+        "lines": "102-104",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "What is the default value of STEPSPERTURN in TRACK?",
+      "input": "",
+      "output": "DEFER: version-specific. Default values of TRACK attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"TRACK STEPSPERTURN default value\"\nStable part: STEPSPERTURN is the number of time steps per revolution period. It is only used for cyclotron (opal-cycl style) tracking; linac tracking takes its step from DT.",
+      "mcp_science_output": "DEFER: version-specific. Default values of TRACK attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"TRACK STEPSPERTURN default value\"\nStable part: STEPSPERTURN is the number of time steps per revolution period. It is only used for cyclotron (opal-cycl style) tracking; linac tracking takes its step from DT.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Track/TrackCmd.cpp",
+        "lines": "99-100",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "Which field solver TYPEs does the FIELDSOLVER command accept?",
+      "input": "",
+      "output": "DEFER: version-specific. The accepted values of FIELDSOLVER attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"FIELDSOLVER TYPE predefined values FieldSolverCmd\"\nStable part: TYPE picks the space-charge solver attached to the run, including a NONE choice that switches space charge off. It is a predefined string, so a misspelled solver name is rejected by the parser.",
+      "mcp_science_output": "DEFER: version-specific. The accepted values of FIELDSOLVER attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"FIELDSOLVER TYPE predefined values FieldSolverCmd\"\nStable part: TYPE picks the space-charge solver attached to the run, including a NONE choice that switches space charge off. It is a predefined string, so a misspelled solver name is rejected by the parser.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Structure/FieldSolverCmd.cpp",
+        "lines": "43-45",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "If I use TYPE=OPEN, which Green's function does the FIELDSOLVER use by default?",
+      "input": "FS1: FIELDSOLVER, TYPE = OPEN, NX = 32, NY = 32, NZ = 64;",
+      "output": "DEFER: version-specific. Default values of FIELDSOLVER attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"FIELDSOLVER GREENSF default STANDARD INTEGRATED\"\nStable part: GREENSF selects the Green's function used by the open-boundary (Hockney) FFT solver. The integrated variant integrates the kernel over a cell, which is more accurate for bunches with large aspect ratios. P3M picks its kernel internally and ignores GREENSF.",
+      "mcp_science_output": "DEFER: version-specific. Default values of FIELDSOLVER attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"FIELDSOLVER GREENSF default STANDARD INTEGRATED\"\nStable part: GREENSF selects the Green's function used by the open-boundary (Hockney) FFT solver. The integrated variant integrates the kernel over a cell, which is more accurate for bunches with large aspect ratios. P3M picks its kernel internally and ignores GREENSF.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Structure/FieldSolverCmd.cpp",
+        "lines": "74-76",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "By how much does OPALX enlarge the bounding box of the bunch for the field solver by default?",
+      "input": "",
+      "output": "DEFER: version-specific. Default values of FIELDSOLVER attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"FIELDSOLVER BBOXINCR default bounding box increase\"\nStable part: BBOXINCR enlarges the computational domain around the bunch, given in percent, so particles near the edge are still on the mesh after a step. A larger value is safer but lowers the mesh resolution for a fixed NX, NY, NZ.",
+      "mcp_science_output": "DEFER: version-specific. Default values of FIELDSOLVER attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"FIELDSOLVER BBOXINCR default bounding box increase\"\nStable part: BBOXINCR enlarges the computational domain around the bunch, given in percent, so particles near the edge are still on the mesh after a step. A larger value is safer but lowers the mesh resolution for a fixed NX, NY, NZ.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Structure/FieldSolverCmd.cpp",
+        "lines": "81-82",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "Which dimensions are parallelized in the FFT if I don't set PARFFTX, PARFFTY and PARFFTZ?",
+      "input": "FS1: FIELDSOLVER, TYPE = FFT, NX = 16, NY = 16, NZ = 128;",
+      "output": "DEFER: version-specific. Default values of FIELDSOLVER attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"FIELDSOLVER PARFFTX PARFFTY PARFFTZ default parallel dimension\"\nStable part: PARFFTX/Y/Z are booleans that say along which axes the field mesh is decomposed over MPI ranks. Decomposing along the long axis of the bunch usually gives the best load balance.",
+      "mcp_science_output": "DEFER: version-specific. Default values of FIELDSOLVER attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"FIELDSOLVER PARFFTX PARFFTY PARFFTZ default parallel dimension\"\nStable part: PARFFTX/Y/Z are booleans that say along which axes the field mesh is decomposed over MPI ranks. Decomposing along the long axis of the bunch usually gives the best load balance.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Structure/FieldSolverCmd.cpp",
+        "lines": "54-61",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "What boundary conditions can I give in BCFFTX, BCFFTY and BCFFTZ, and what is the default?",
+      "input": "",
+      "output": "DEFER: version-specific. The accepted values of FIELDSOLVER attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"FIELDSOLVER BCFFTX BCFFTY BCFFTZ predefined values default\"\nStable part: BCFFTX/Y/Z set the boundary of the Poisson domain per axis. A Dirichlet plane (for example a cathode) is configured separately and is not the same thing as a Dirichlet domain boundary.",
+      "mcp_science_output": "DEFER: version-specific. The accepted values of FIELDSOLVER attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"FIELDSOLVER BCFFTX BCFFTY BCFFTZ predefined values default\"\nStable part: BCFFTX/Y/Z set the boundary of the Poisson domain per axis. A Dirichlet plane (for example a cathode) is configured separately and is not the same thing as a Dirichlet domain boundary.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Structure/FieldSolverCmd.cpp",
+        "lines": "63-72",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "Which PIPEMODE options does the FFT2D5 solver support?",
+      "input": "",
+      "output": "DEFER: version-specific. The accepted values of FIELDSOLVER attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"FIELDSOLVER PIPEMODE FFT2D5 predefined values\"\nStable part: PIPEMODE only applies to TYPE=FFT2D5. It selects the geometry model for the longitudinal field, while the transverse Poisson slices stay open. The pipe dimensions are given by PIPESIZEX and PIPESIZEY in metres.",
+      "mcp_science_output": "DEFER: version-specific. The accepted values of FIELDSOLVER attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"FIELDSOLVER PIPEMODE FFT2D5 predefined values\"\nStable part: PIPEMODE only applies to TYPE=FFT2D5. It selects the geometry model for the longitudinal field, while the transverse Poisson slices stay open. The pipe dimensions are given by PIPESIZEX and PIPESIZEY in metres.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Structure/FieldSolverCmd.cpp",
+        "lines": "85-101",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "Which distribution TYPEs can I use in the DISTRIBUTION command?",
+      "input": "",
+      "output": "DEFER: version-specific. The accepted values of DISTRIBUTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"DISTRIBUTION TYPE predefined values Distribution.cpp\"\nStable part: The distribution type is a predefined string of the DISTRIBUTION command, so an unknown type is rejected by the parser. Each type is implemented as its own sampler class in src/Distribution.",
+      "mcp_science_output": "DEFER: version-specific. The accepted values of DISTRIBUTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"DISTRIBUTION TYPE predefined values Distribution.cpp\"\nStable part: The distribution type is a predefined string of the DISTRIBUTION command, so an unknown type is rejected by the parser. Each type is implemented as its own sampler class in src/Distribution.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Distribution/Distribution.cpp",
+        "lines": "111-114",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "At how many sigma is a Gaussian distribution cut off if I don't set CUTOFFX, CUTOFFPX, ...?",
+      "input": "D1: DISTRIBUTION, TYPE = GAUSS, SIGMAX = 1.0e-3, SIGMAY = 1.0e-3, SIGMAZ = 1.0e-3;",
+      "output": "DEFER: version-specific. Default values of DISTRIBUTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"DISTRIBUTION CUTOFFX CUTOFFPX CUTOFFLONG default sigma\"\nStable part: The CUTOFF* attributes truncate the sampled distribution in each dimension and are given in units of the corresponding sigma, not in metres or in units of momentum.",
+      "mcp_science_output": "DEFER: version-specific. Default values of DISTRIBUTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"DISTRIBUTION CUTOFFX CUTOFFPX CUTOFFLONG default sigma\"\nStable part: The CUTOFF* attributes truncate the sampled distribution in each dimension and are given in units of the corresponding sigma, not in metres or in units of momentum.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Distribution/Distribution.cpp",
+        "lines": "129-141",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "How many emission steps does an OPALFLATTOP distribution use by default?",
+      "input": "",
+      "output": "DEFER: version-specific. Default values of DISTRIBUTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"DISTRIBUTION EMISSIONSTEPS default OPALFLATTOP EMITTEDFROMFILE\"\nStable part: EMISSIONSTEPS is the number of time steps over which the particles of an emitted distribution (OPALFLATTOP, EMITTEDFROMFILE) leave the cathode. More steps resolve the emission better at a higher cost.",
+      "mcp_science_output": "DEFER: version-specific. Default values of DISTRIBUTION attributes change between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"DISTRIBUTION EMISSIONSTEPS default OPALFLATTOP EMITTEDFROMFILE\"\nStable part: EMISSIONSTEPS is the number of time steps over which the particles of an emitted distribution (OPALFLATTOP, EMITTEDFROMFILE) leave the cathode. More steps resolve the emission better at a higher cost.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Distribution/Distribution.cpp",
+        "lines": "181-185",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "What exact value does OPALX use for the proton rest mass?",
+      "input": "",
+      "output": "DEFER: citable value. Exact constants have to be quoted from the code that is checked out, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"Physics.h proton rest mass m_p constant\"\nStable part: Physical constants live in the Physics namespace in src/Physics/Physics.h. Particle masses there are stored as rest energies in GeV, not in kg, so code that needs SI masses has to convert.",
+      "mcp_science_output": "DEFER: citable value. Exact constants have to be quoted from the code that is checked out, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"Physics.h proton rest mass m_p constant\"\nStable part: Physical constants live in the Physics namespace in src/Physics/Physics.h. Particle masses there are stored as rest energies in GeV, not in kg, so code that needs SI masses has to convert.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Physics/Physics.h",
+        "lines": "104-105",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "What arguments does ParticleMeshFieldTransfer::depositCharge take, and in which order?",
+      "input": "",
+      "output": "DEFER: version-specific. Exact signatures change between IPPL/OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"ParticleMeshFieldTransfer depositCharge signature arguments\"\nStable part: depositCharge clears rho, deposits the charge of the selected particles onto the mesh (cloud-in-cell scatter), optionally adds image charges, and normalizes the density in place. gatherVector does the reverse and interpolates a mesh field back to the particle positions.",
+      "mcp_science_output": "DEFER: version-specific. Exact signatures change between IPPL/OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"ParticleMeshFieldTransfer depositCharge signature arguments\"\nStable part: depositCharge clears rho, deposits the charge of the selected particles onto the mesh (cloud-in-cell scatter), optionally adds image charges, and normalizes the density in place. gatherVector does the reverse and interpolates a mesh field back to the particle positions.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/SpaceCharge/CartesianPIC3D/ParticleMeshFieldTransfer.h",
+        "lines": "93-98",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "Am I calling the ParallelTracker constructor correctly?",
+      "input": "ParallelTracker tracker(*beamline, *bunch, *solver, ds, false,\n                        maxSteps, zStart, zStop, dt);",
+      "output": "DEFER: version-specific. Exact signatures change between IPPL/OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"ParallelTracker constructor signature arguments maxSTEPS sStop dt\"\nStable part: ParallelTracker is built by TrackRun from the beamline, the bunch, the space-charge solver and the data sink, plus per-segment vectors of max steps, stop positions and time steps that come from the TRACK command. Optional trailing arguments carry emission samplers and the restart state.",
+      "mcp_science_output": "DEFER: version-specific. Exact signatures change between IPPL/OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"ParallelTracker constructor signature arguments maxSTEPS sStop dt\"\nStable part: ParallelTracker is built by TrackRun from the beamline, the bunch, the space-charge solver and the data sink, plus per-segment vectors of max steps, stop positions and time steps that come from the TRACK command. Optional trailing arguments carry emission samplers and the restart state.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Algorithms/ParallelTracker.h",
+        "lines": "137-145",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "In which file and at which line is ParallelTracker::computeSpaceChargeFields defined?",
+      "input": "",
+      "output": "DEFER: version-specific. File locations and line numbers change with every commit, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"ParallelTracker computeSpaceChargeFields definition\"\nStable part: computeSpaceChargeFields is a member of ParallelTracker (src/Algorithms). It is called once per step in the tracking loop, between the first and second half of the time integration, and hands the solve to the configured space-charge solver in src/SpaceCharge.",
+      "mcp_science_output": "DEFER: version-specific. File locations and line numbers change with every commit, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"ParallelTracker computeSpaceChargeFields definition\"\nStable part: computeSpaceChargeFields is a member of ParallelTracker (src/Algorithms). It is called once per step in the tracking loop, between the first and second half of the time integration, and hands the solve to the configured space-charge solver in src/SpaceCharge.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/Algorithms/ParallelTracker.cpp",
+        "lines": "847",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [
+        {
+          "repo": "OPALX",
+          "file": "src/Algorithms/ParallelTracker.h",
+          "lines": "229",
+          "commit": "45e126f3a"
+        }
+      ],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "What is the signature of PoissonSolver::solve?",
+      "input": "",
+      "output": "DEFER: version-specific. Exact signatures change between IPPL/OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"PoissonSolver solve signature PoissonSolveRequest PoissonSolveOptions\"\nStable part: PoissonSolver is the common base of the OPALX Poisson adapters (open, periodic, P3M). It wraps the native IPPL solver, cannot be copied or moved, and has to be rebuilt after a change of the field layout.",
+      "mcp_science_output": "DEFER: version-specific. Exact signatures change between IPPL/OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory.\nscience_mcp query: \"PoissonSolver solve signature PoissonSolveRequest PoissonSolveOptions\"\nStable part: PoissonSolver is the common base of the OPALX Poisson adapters (open, periodic, P3M). It wraps the native IPPL solver, cannot be copied or moved, and has to be rebuilt after a change of the field layout.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/SpaceCharge/Poisson/PoissonSolver.h",
+        "lines": "68-73",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "Which particle boundary condition does OPALX use for the particle layout when the field solver is OPEN?",
+      "input": "",
+      "output": "DEFER: version-specific. This behaviour changed between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory. It was fixed in a recent pull request.\nscience_mcp query: \"PartBunch particle boundary condition ippl::BC OPEN periodic layout\"\nStable part: The particle layout boundary condition is set separately from the field boundary condition of the Poisson solver. The two should agree: particles of an open-boundary run should not wrap around periodically.",
+      "mcp_science_output": "DEFER: version-specific. This behaviour changed between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory. It was fixed in a recent pull request.\nscience_mcp query: \"PartBunch particle boundary condition ippl::BC OPEN periodic layout\"\nStable part: The particle layout boundary condition is set separately from the field boundary condition of the Poisson solver. The two should agree: particles of an open-boundary run should not wrap around periodically.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/PartBunch/PartBunch.cpp",
+        "lines": "82-83",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
+    },
+    {
+      "instruction": "Where is the CartesianPIC space-charge algorithm in OPALX?",
+      "input": "",
+      "output": "DEFER: version-specific. This behaviour changed between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory. Classes and directories in src/SpaceCharge were renamed recently.\nscience_mcp query: \"CartesianPIC3D space charge algorithm directory\"\nStable part: The 3D particle-in-cell space-charge algorithm lives under src/SpaceCharge, next to the FFT2D5 solver and the Poisson adapters. It is chosen through the FIELDSOLVER command, not constructed directly in the input file.",
+      "mcp_science_output": "DEFER: version-specific. This behaviour changed between OPALX versions, so this has to be looked up with the science MCP (RAG), not answered from memory. Classes and directories in src/SpaceCharge were renamed recently.\nscience_mcp query: \"CartesianPIC3D space charge algorithm directory\"\nStable part: The 3D particle-in-cell space-charge algorithm lives under src/SpaceCharge, next to the FFT2D5 solver and the Poisson adapters. It is chosen through the FIELDSOLVER command, not constructed directly in the input file.",
+      "category": "defer_pair",
+      "defer": true,
+      "source": {
+        "repo": "OPALX",
+        "file": "src/SpaceCharge/CartesianPIC3D/CartesianPIC3DAlgorithm.h",
+        "lines": "47",
+        "commit": "45e126f3a"
+      },
+      "extra_sources": [
+        {
+          "repo": "OPALX",
+          "file": "src/SpaceCharge/SpaceChargeFactory.cpp",
+          "lines": "37-43",
+          "commit": "45e126f3a"
+        }
+      ],
+      "teacher": "claude-opus-5-5",
+      "grounding_check": "pass"
     }
   ]
 }
