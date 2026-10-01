@@ -2,7 +2,7 @@
   "mcpServers": {
     "physicscode-science": {
       "type": "http",
-      "url": "https://www.physicscode.ai",
+      "url": "https://www.physicscode.ai/mcp",
       "headers": { "Authorization": "Bearer ${PHYSICSCODE_TOKEN}" }
     }
   }
