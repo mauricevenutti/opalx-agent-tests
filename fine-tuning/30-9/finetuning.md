@@ -143,7 +143,7 @@ Record disk:
 {"instruction": "...", "input": "...", "output": "...",
  "category": "framework_idiom", "defer": false,
  "source": {"repo": "OPALX", "file": "...", "lines": "120-164", "commit": "a1b2c3d"},
- "stability": 0.92, "teacher": "model-id", "grounding_check": "pass"}
+ "teacher": "model-id", "grounding_check": "pass"}
 
  ```
 
