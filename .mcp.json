@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "physicscode-science": {
+      "type": "http",
+      "url": "https://www.physicscode.ai",
+      "headers": { "Authorization": "Bearer ${PHYSICSCODE_TOKEN}" }
+    }
+  }
+}
